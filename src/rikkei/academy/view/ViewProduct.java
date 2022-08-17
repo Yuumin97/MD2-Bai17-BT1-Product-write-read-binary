@@ -11,6 +11,9 @@ public class ViewProduct {
     public static ProductController productController = new ProductController();
     public static List<Product> productList = productController.showProduct();
     public static void main(String[] args) {
+        new ViewProduct();
+    }
+    ViewProduct(){
         System.out.println("======= WELCOME ========");
         System.out.println("1. Create Product");
         System.out.println("2. Show list Product");
@@ -24,9 +27,10 @@ public class ViewProduct {
                 formShowListProduct();
                 break;
             case 3:
-                selectProduct(productList);
+                formSearchProduct();
                 break;
         }
+
 
     }
     private static void formCreateProduct(){
@@ -44,34 +48,20 @@ public class ViewProduct {
         System.out.println("Enter the price Product");
         int price = Config.scanner().nextInt();
         List<Product> productList = new ArrayList<>();
-
         Product product = new Product(idProduct, name, country, price);
         productController.createProduct(product);
         productController.showProduct();
         System.out.println("CREATE PRODUCT SUCCESS!");
-        formShowListProduct();
-
-    }
-    private static List<Product> selectProduct(List<Product> listSelect){
-        System.out.println("========ID=========Name=========Country========Price======");
-        for (int i = 0; i < productList.size(); i++) {
-            System.out.println("====="+productList.get(i).getId()+"========"+productList.get(i).getName()+"====="+productList.get(i).getCountry()
-            +"======="+productList.get(i).getPrice()+"=======");
-        }
-        System.out.println("Enter id of product to select: ");
-        int idProduct = Config.scanner().nextInt();
-        System.out.println("Enter eny key to continue - Enter quit to exit select Singer");
+        showListProduct();
+        System.out.println("Enter quit to exit");
         String exitSelect = Config.scanner().nextLine();
         if (exitSelect.equalsIgnoreCase("quit")){
-            return listSelect;
-        }else {
-            selectProduct(listSelect);
+            new ViewProduct();
         }
-        return listSelect;
     }
     private static void formShowListProduct(){
         showListProduct();
-        System.out.println("Enter any key to continue - Enter quit to exit select Singer");
+        System.out.println("Enter quit to exit");
         String exitSelect = Config.scanner().nextLine();
         if (exitSelect.equalsIgnoreCase("quit")){
             new ViewProduct();
@@ -83,6 +73,32 @@ public class ViewProduct {
         for (int i = 0; i < productList.size(); i++) {
             System.out.println("===="+productList.get(i).getId()+"===="+productList.get(i).getName()+"===="+productList.get(i).getCountry()
                     +"===="+productList.get(i).getPrice()+"=====");
+        }
+
+    }
+    private static void formSearchProduct(){
+        System.out.println("Enter ID Product");
+        int idProduct = Config.scanner().nextInt();
+        List<Product> products = productController.searchProduct(idProduct);
+        if (productController.searchProduct(idProduct) != null){
+            System.out.println("ID doesn't not exist");
+            System.out.println("Enter quit to exit");
+            String backMenu = Config.scanner().nextLine();
+            if (backMenu.equalsIgnoreCase("quit")){
+                new ViewProduct();
+            }
+        }else {
+            System.out.println("======ID======NAME======COUNTRY========PRICE=======");
+            for (int i = 0; i < products.size(); i++) {
+                System.out.println("===="+products.get(i).getId()+"===="+products.get(i).getName()+"===="+products.get(i).getCountry()
+                        +"===="+products.get(i).getPrice()+"=====");
+                productController.showProduct();
+            }
+            System.out.println("Enter quit to exit");
+            String backMenu = Config.scanner().nextLine();
+            if (backMenu.equalsIgnoreCase("quit")){
+                new ViewProduct();
+            }
         }
 
     }

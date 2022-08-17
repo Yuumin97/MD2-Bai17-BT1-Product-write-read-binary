@@ -3,6 +3,7 @@ package rikkei.academy.service;
 import rikkei.academy.config.Config;
 import rikkei.academy.model.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductServiceMPL implements IProductService {
@@ -22,9 +23,16 @@ public class ProductServiceMPL implements IProductService {
 
     }
 
-
     @Override
-    public Object findAll(int id) {
-        return null;
+    public List<Product> findById(int idProduct) {
+        List<Product> products =new ArrayList<>();
+        for (int i = 0; i < productList.size(); i++) {
+            if (idProduct == productList.get(i).getId()){
+                products.add(productList.get(i));
+            }
+
+        }
+        return products;
     }
+
 }

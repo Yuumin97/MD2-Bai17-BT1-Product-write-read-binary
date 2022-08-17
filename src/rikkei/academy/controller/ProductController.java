@@ -14,4 +14,7 @@ public class ProductController {
     public void createProduct(Product product){
         productService.save(product);
     }
+    public List<Product> searchProduct(int idProduct){
+        return productService.findById(idProduct);
+    }
 }
